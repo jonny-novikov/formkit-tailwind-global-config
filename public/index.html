@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <script
+      async=""
+      src="https://cdn.jsdelivr.net/npm/es-module-shims@1.2.0/dist/es-module-shims.min.js"
+    ></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script>
+      function createPlugin(plugin, config) {
+        return {
+          handler: plugin,
+          config,
+        };
+      }
+
+      createPlugin.withOptions = function (
+        pluginFunction,
+        configFunction = () => ({})
+      ) {
+        const optionsFunction = function (options) {
+          return {
+            __options: options,
+            handler: pluginFunction(options),
+            config: configFunction(options),
+          };
+        };
+
+        optionsFunction.__isOptionsFunction = true;
+
+        // Expose plugin dependencies so that `object-hash` returns a different
+        // value if anything here changes, to ensure a rebuild is triggered.
+        optionsFunction.__pluginFunction = pluginFunction;
+        optionsFunction.__configFunction = configFunction;
+
+        return optionsFunction;
+      };
+
+      const FormKitPlugin = createPlugin(({ addVariant }) => {
+        addVariant('formkit-disabled', [
+          '&[data-disabled]',
+          '[data-disabled] &',
+          '[data-disabled]&',
+        ]);
+        addVariant('formkit-invalid', [
+          '&[data-invalid]',
+          '[data-invalid] &',
+          '[data-invalid]&',
+        ]);
+        addVariant('formkit-errors', [
+          '&[data-errors]',
+          '[data-errors] &',
+          '[data-errors]&',
+        ]);
+        addVariant('formkit-complete', [
+          '&[data-complete]',
+          '[data-complete] &',
+          '[data-complete]&',
+        ]);
+        addVariant('formkit-loading', [
+          '&[data-loading]',
+          '[data-loading] &',
+          '[data-loading]&',
+        ]);
+        addVariant('formkit-submitted', [
+          '&[data-submitted]',
+          '[data-submitted] &',
+          '[data-submitted]&',
+        ]);
+        addVariant('formkit-multiple', [
+          '&[data-multiple]',
+          '[data-multiple] &',
+          '[data-multiple]&',
+        ]);
+        addVariant('formkit-action', [
+          '.formkit-actions &',
+          '.formkit-actions&',
+        ]);
+        addVariant('formkit-message-validation', [
+          '[data-message-type="validation"] &',
+          '[data-message-type="validation"]&',
+        ]);
+        addVariant('formkit-message-error', [
+          '[data-message-type="error"] &',
+          '[data-message-type="error"]&',
+        ]);
+      });
+
+      window.tailwind.config = {
+        plugins: [FormKitPlugin],
+      };
+    </script>
+    <title>Vue App</title>
+  </head>
+  <body>
+    <noscript>
+      <strong
+        >We're sorry but Vue App doesn't work properly without JavaScript
+        enabled. Please enable it to continue.</strong
+      >
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
